@@ -2,8 +2,6 @@
 
 A modern, dependency-free Sudoku game built with plain HTML5, CSS3, and vanilla JavaScript (ES6+): no frameworks, no build step.
 
-**[Play it live](https://leo-bonacini.github.io/sudoku/)** · hosted on GitHub Pages
-
 ## Features
 
 - Four difficulty levels (Easy, Medium, Hard, Expert) driven by clue count, each generated with a guaranteed unique solution
