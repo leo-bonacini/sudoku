@@ -1053,4 +1053,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', initApp);
+
+  // Public hook for external tooling that drives the game headlessly.
+  window.__sudokuApi = { Game, state };
 })();
