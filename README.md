@@ -69,7 +69,3 @@ cd sudoku
 python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
-
-## Deployment
-
-The game is fully static, so it's served directly from this repo via GitHub Pages (Settings → Pages → deploy from the `main` branch, root folder). No build step, so there's nothing to publish beyond pushing to `main`.
