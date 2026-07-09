@@ -51,21 +51,3 @@ sudoku/
 ├── script.js
 └── README.md
 ```
-
-## Installation
-
-No build tooling required.
-
-```bash
-git clone https://github.com/leo-bonacini/sudoku.git
-cd sudoku
-open index.html
-```
-
-Or serve it locally:
-
-```bash
-cd sudoku
-python3 -m http.server 8000
-# then visit http://localhost:8000
-```
