@@ -91,9 +91,9 @@
 
   <!-- ============ MAIN MENU ============ -->
   <div id="menu-overlay" class="modal-overlay">
-    <div class="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="menu-modal-title" tabindex="-1">
       <button id="btn-menu-close" class="icon-btn modal-close" aria-label="Close menu" title="Close">✕</button>
-      <h2 class="modal-title">Sudoku</h2>
+      <h2 class="modal-title" id="menu-modal-title">Sudoku</h2>
 
       <div id="difficulty-select" class="difficulty-grid">
         <button class="btn difficulty-btn" data-difficulty="easy">Easy</button>
@@ -110,8 +110,8 @@
 
   <!-- ============ SETTINGS MODAL ============ -->
   <div id="settings-modal" class="modal-overlay hidden">
-    <div class="modal">
-      <h2 class="modal-title">Settings</h2>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title" tabindex="-1">
+      <h2 class="modal-title" id="settings-modal-title">Settings</h2>
 
       <label class="setting-row">
         <span>Dark mode</span>
@@ -148,8 +148,8 @@
 
   <!-- ============ STATISTICS MODAL ============ -->
   <div id="stats-modal" class="modal-overlay hidden">
-    <div class="modal">
-      <h2 class="modal-title">Statistics</h2>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="stats-modal-title" tabindex="-1">
+      <h2 class="modal-title" id="stats-modal-title">Statistics</h2>
       <div class="stat-row"><span>Games played</span><strong id="stat-played">0</strong></div>
       <div class="stat-row"><span>Games won</span><strong id="stat-won">0</strong></div>
       <div class="stat-row"><span>Completion</span><strong id="stat-completion">0%</strong></div>
@@ -167,7 +167,7 @@
 
   <!-- ============ EXPORT / IMPORT MODAL ============ -->
   <div id="io-modal" class="modal-overlay hidden">
-    <div class="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="io-modal-title" tabindex="-1">
       <h2 class="modal-title" id="io-modal-title">Export Puzzle</h2>
       <textarea id="io-textarea" class="io-textarea" rows="4" aria-label="Puzzle code"></textarea>
       <div id="io-import-actions" class="hidden">

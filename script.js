@@ -632,6 +632,7 @@
       state.redoStack.length = 0;
     },
     undo() {
+      if (!state.gameActive || state.paused) return;
       if (!state.undoStack.length) return;
       const current = History.snapshot();
       const prev = state.undoStack.pop();
@@ -639,6 +640,7 @@
       History.restore(prev);
     },
     redo() {
+      if (!state.gameActive || state.paused) return;
       if (!state.redoStack.length) return;
       const current = History.snapshot();
       const next = state.redoStack.pop();
@@ -768,7 +770,11 @@
     },
 
     handleKeydown(e) {
-      if (document.querySelector('.modal-overlay:not(.hidden)')) return;
+      if (document.querySelector('.modal-overlay:not(.hidden)')) {
+        if (e.key === 'Escape') { e.preventDefault(); Modals.handleEscape(); }
+        else if (e.key === 'Tab') { Modals.handleTab(e); }
+        return;
+      }
 
       if (e.ctrlKey && e.key.toLowerCase() === 'z') { e.preventDefault(); History.undo(); return; }
       if (e.ctrlKey && e.key.toLowerCase() === 'y') { e.preventDefault(); History.redo(); return; }
@@ -912,6 +918,62 @@
   };
 
   /* =====================================================================
+     MODAL FOCUS MANAGEMENT
+     Keeps keyboard/screen-reader users inside the open dialog: focus moves
+     in on open, back to the trigger on close, Tab is trapped, Escape closes.
+     ===================================================================== */
+  const Modals = {
+    lastFocused: null,
+
+    open(overlay) {
+      Modals.lastFocused = document.activeElement;
+      overlay.classList.remove('hidden');
+      const dialog = overlay.querySelector('.modal');
+      if (dialog) dialog.focus();
+    },
+
+    close(overlay) {
+      overlay.classList.add('hidden');
+      if (Modals.lastFocused && document.body.contains(Modals.lastFocused)) {
+        Modals.lastFocused.focus();
+      }
+      Modals.lastFocused = null;
+    },
+
+    // Modals can stack (e.g. Settings opened from the menu); all share the
+    // same z-index, so the last one in DOM order is the one on top.
+    topmost() {
+      const open = document.querySelectorAll('.modal-overlay:not(.hidden)');
+      return open.length ? open[open.length - 1] : null;
+    },
+
+    focusableIn(dialog) {
+      return Array.from(dialog.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )).filter(el => !el.disabled && el.getClientRects().length > 0);
+    },
+
+    handleTab(e) {
+      const overlay = Modals.topmost();
+      if (!overlay) return;
+      const dialog = overlay.querySelector('.modal');
+      const focusables = Modals.focusableIn(dialog);
+      if (!focusables.length) { e.preventDefault(); return; }
+      const first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      else if (!dialog.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    },
+
+    handleEscape() {
+      const overlay = Modals.topmost();
+      if (!overlay) return;
+      if (overlay.id === 'menu-overlay') Menu.close();
+      else Modals.close(overlay);
+    }
+  };
+
+  /* =====================================================================
      MENU
      ===================================================================== */
   const Menu = {
@@ -922,10 +984,10 @@
         state.paused = true;
       }
       document.getElementById('btn-continue').disabled = !Storage.hasSavedGame();
-      document.getElementById('menu-overlay').classList.remove('hidden');
+      Modals.open(document.getElementById('menu-overlay'));
     },
     close() {
-      document.getElementById('menu-overlay').classList.add('hidden');
+      Modals.close(document.getElementById('menu-overlay'));
       if (state.gameActive) state.paused = Menu.wasPausedBeforeMenu;
     }
   };
@@ -942,7 +1004,7 @@
       overlay.addEventListener('click', (e) => {
         if (e.target !== overlay) return;
         if (overlay.id === 'menu-overlay') Menu.close();
-        else overlay.classList.add('hidden');
+        else Modals.close(overlay);
       });
     });
 
@@ -971,17 +1033,17 @@
 
     document.getElementById('btn-stats').addEventListener('click', () => {
       Statistics.render();
-      document.getElementById('stats-modal').classList.remove('hidden');
+      Modals.open(document.getElementById('stats-modal'));
     });
     document.getElementById('btn-stats-close').addEventListener('click', () => {
-      document.getElementById('stats-modal').classList.add('hidden');
+      Modals.close(document.getElementById('stats-modal'));
     });
 
     document.getElementById('btn-settings').addEventListener('click', () => {
-      document.getElementById('settings-modal').classList.remove('hidden');
+      Modals.open(document.getElementById('settings-modal'));
     });
     document.getElementById('btn-settings-close').addEventListener('click', () => {
-      document.getElementById('settings-modal').classList.add('hidden');
+      Modals.close(document.getElementById('settings-modal'));
     });
 
     const settingMap = {
@@ -1013,22 +1075,22 @@
       document.getElementById('io-textarea').value = PuzzleIO.exportString();
       document.getElementById('io-textarea').readOnly = true;
       document.getElementById('io-import-actions').classList.add('hidden');
-      document.getElementById('io-modal').classList.remove('hidden');
+      Modals.open(document.getElementById('io-modal'));
     });
     document.getElementById('btn-import').addEventListener('click', () => {
       document.getElementById('io-modal-title').textContent = 'Import Puzzle';
       document.getElementById('io-textarea').value = '';
       document.getElementById('io-textarea').readOnly = false;
       document.getElementById('io-import-actions').classList.remove('hidden');
-      document.getElementById('io-modal').classList.remove('hidden');
+      Modals.open(document.getElementById('io-modal'));
     });
     document.getElementById('btn-io-load').addEventListener('click', () => {
       if (PuzzleIO.importString(document.getElementById('io-textarea').value)) {
-        document.getElementById('io-modal').classList.add('hidden');
+        Modals.close(document.getElementById('io-modal'));
       }
     });
     document.getElementById('btn-io-close').addEventListener('click', () => {
-      document.getElementById('io-modal').classList.add('hidden');
+      Modals.close(document.getElementById('io-modal'));
     });
 
     document.getElementById('btn-victory-new').addEventListener('click', () => {
