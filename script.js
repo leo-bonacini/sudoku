@@ -1,9 +1,7 @@
 (function () {
   'use strict';
 
-  /* =====================================================================
-     CONSTANTS
-     ===================================================================== */
+  /* Constants */
   const DIFFICULTY_CLUES = { easy: 44, medium: 34, hard: 29, expert: 24 };
   const HINTS_LIMIT = 3;
   const STORAGE_KEYS = {
@@ -13,9 +11,7 @@
     RECENT_PUZZLES: 'sudoku.recent.v1'
   };
 
-  /* =====================================================================
-     UTILITIES
-     ===================================================================== */
+  /* Utilities */
   // Format seconds as mm:ss for timer and stats display.
   function formatTime(totalSeconds) {
     const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
@@ -56,9 +52,7 @@
     return Number(`${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`);
   }
 
-  /* =====================================================================
-     BOARD
-     ===================================================================== */
+  /* Board */
   const Board = {
     rowOf(i) { return Math.floor(i / 9); },
     colOf(i) { return i % 9; },
@@ -88,9 +82,7 @@
   // Precomputed peer list per cell index; avoids recomputation on every render.
   const PEERS = Array.from({ length: 81 }, (_, i) => Board.peersOf(i));
 
-  /* =====================================================================
-     SOLVER
-     ===================================================================== */
+  /* Solver */
   const Solver = {
     // Legal candidate digits for an empty cell given the current board.
     getCandidates(board, i) {
@@ -145,9 +137,7 @@
     }
   };
 
-  /* =====================================================================
-     GENERATOR
-     ===================================================================== */
+  /* Generator */
   const Generator = {
     // Removes digits one at a time, keeping a removal only if the puzzle
     // still has exactly one solution. Guarantees a unique-solution puzzle.
@@ -183,9 +173,7 @@
     }
   };
 
-  /* =====================================================================
-     STATE
-     ===================================================================== */
+  /* State */
   const state = {
     puzzle: null, solution: null, board: null, given: null, notes: null,
     difficulty: 'easy', isDaily: false, selected: null, inputMode: 'normal',
@@ -199,9 +187,7 @@
     autoSave: true, showTimer: true, highContrast: false
   };
 
-  /* =====================================================================
-     UI
-     ===================================================================== */
+  /* UI */
   const UI = {
     boardEl: null, numberPadEl: null, cellEls: [], _toastHandle: null,
 
@@ -367,9 +353,7 @@
     }
   };
 
-  /* =====================================================================
-     STORAGE
-     ===================================================================== */
+  /* Storage */
   function serializeNotes(notesArr) { return notesArr.map(s => Array.from(s)); }
   function deserializeNotes(arr) { return arr.map(a => new Set(a)); }
   function serializeSnapshot(snap) {
@@ -447,9 +431,7 @@
     }
   };
 
-  /* =====================================================================
-     STATISTICS
-     ===================================================================== */
+  /* Statistics */
   const Statistics = {
     data: null,
 
@@ -495,9 +477,7 @@
     }
   };
 
-  /* =====================================================================
-     ANIMATIONS
-     ===================================================================== */
+  /* Animations */
   const Animations = {
     confetti() {
       if (!settings.animations) return;
@@ -517,9 +497,7 @@
     }
   };
 
-  /* =====================================================================
-     SETTINGS
-     ===================================================================== */
+  /* Settings */
   const Settings = {
     init() {
       Storage.loadSettings();
@@ -551,9 +529,7 @@
     save() { Storage.saveSettings(); }
   };
 
-  /* =====================================================================
-     SOUND
-     ===================================================================== */
+  /* Sound */
   const Sound = {
     ctx: null,
     ensureCtx() {
@@ -580,9 +556,7 @@
     }
   };
 
-  /* =====================================================================
-     TIMER
-     ===================================================================== */
+  /* Timer */
   const Timer = {
     start() {
       Timer.stop();
@@ -612,9 +586,7 @@
     }
   };
 
-  /* =====================================================================
-     HISTORY (undo / redo)
-     ===================================================================== */
+  /* HISTORY (undo / redo) */
   const History = {
     snapshot() {
       return {
@@ -659,9 +631,7 @@
     }
   };
 
-  /* =====================================================================
-     INPUT
-     ===================================================================== */
+  /* Input */
   const Input = {
     init() {
       document.addEventListener('keydown', Input.handleKeydown);
@@ -799,9 +769,7 @@
     }
   };
 
-  /* =====================================================================
-     PUZZLE EXPORT / IMPORT
-     ===================================================================== */
+  /* Puzzle export / import */
   const PuzzleIO = {
     exportString() {
       return state.puzzle.map(v => (v === 0 ? '.' : v)).join('');
@@ -824,9 +792,7 @@
     }
   };
 
-  /* =====================================================================
-     GAME ORCHESTRATION
-     ===================================================================== */
+  /* Game orchestration */
   const Game = {
     newGame(difficulty) {
       const { puzzle, solution } = Generator.generatePuzzle(difficulty);
@@ -973,9 +939,7 @@
     }
   };
 
-  /* =====================================================================
-     MENU
-     ===================================================================== */
+  /* Menu */
   const Menu = {
     wasPausedBeforeMenu: false,
     open() {
@@ -992,9 +956,7 @@
     }
   };
 
-  /* =====================================================================
-     EVENT BINDING
-     ===================================================================== */
+  /* Event binding */
   function bindEvents() {
     document.getElementById('btn-menu').addEventListener('click', Menu.open);
     document.getElementById('btn-menu-close').addEventListener('click', Menu.close);
@@ -1102,9 +1064,7 @@
     });
   }
 
-  /* =====================================================================
-     INIT
-     ===================================================================== */
+  /* Init */
   function initApp() {
     Settings.init();
     Statistics.init();

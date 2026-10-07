@@ -1,6 +1,4 @@
-/* =====================================================================
-   ROOT VARIABLES / THEMES
-   ===================================================================== */
+/* Root variables / themes */
 :root {
   --radius-lg: 18px;
   --radius-md: 12px;
@@ -80,9 +78,7 @@ body.high-contrast[data-theme="light"] {
   --accent: #a95c00;
 }
 
-/* =====================================================================
-   RESET / BASE
-   ===================================================================== */
+/* Reset / base */
 * { box-sizing: border-box; }
 
 html, body {
@@ -115,9 +111,7 @@ button {
 
 .hidden { display: none !important; }
 
-/* =====================================================================
-   TOP BAR
-   ===================================================================== */
+/* Top bar */
 .topbar {
   display: flex;
   align-items: center;
@@ -156,9 +150,7 @@ button {
 .icon-btn:hover { background: var(--cell-bg-hover); }
 .icon-btn:active { transform: scale(0.9); }
 
-/* =====================================================================
-   LAYOUT
-   ===================================================================== */
+/* Layout */
 .game-layout {
   display: flex;
   gap: 24px;
@@ -219,9 +211,7 @@ button {
 }
 .stat-row:last-child { border-bottom: none; }
 
-/* =====================================================================
-   GAME INFO / TIMER / PROGRESS
-   ===================================================================== */
+/* Game info / timer / progress */
 .game-info {
   width: 100%;
   display: flex;
@@ -265,9 +255,7 @@ button {
   transition: width 0.35s ease;
 }
 
-/* =====================================================================
-   BOARD
-   ===================================================================== */
+/* Board */
 .board-wrapper {
   position: relative;
   width: 100%;
@@ -367,9 +355,7 @@ button {
   font-weight: 800;
 }
 
-/* =====================================================================
-   OVERLAYS (pause / victory)
-   ===================================================================== */
+/* OVERLAYS (pause / victory) */
 .overlay {
   position: absolute;
   inset: 0;
@@ -423,9 +409,7 @@ button {
   to { transform: translateY(520px) rotate(540deg); opacity: 0; }
 }
 
-/* =====================================================================
-   NUMBER PAD / ACTION BAR
-   ===================================================================== */
+/* Number pad / action bar */
 .number-pad {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
@@ -482,9 +466,7 @@ button {
 .btn:disabled { opacity: 0.4; pointer-events: none; }
 .btn .ico { font-size: 1rem; }
 
-/* =====================================================================
-   MODALS
-   ===================================================================== */
+/* Modals */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -584,9 +566,7 @@ button {
   to { transform: translate(-50%, 0); opacity: 1; }
 }
 
-/* =====================================================================
-   RESPONSIVE
-   ===================================================================== */
+/* Responsive */
 @media (max-width: 760px) {
   .game-layout { flex-direction: column; align-items: stretch; padding: 0 14px 30px; }
   .side-panel { flex-direction: row; flex-wrap: wrap; }
