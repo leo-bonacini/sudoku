@@ -883,11 +883,8 @@
     }
   };
 
-  /* =====================================================================
-     MODAL FOCUS MANAGEMENT
-     Keeps keyboard/screen-reader users inside the open dialog: focus moves
-     in on open, back to the trigger on close, Tab is trapped, Escape closes.
-     ===================================================================== */
+  /* Modal focus management: focus moves in on open, back to the trigger
+     on close, Tab is trapped, Escape closes. */
   const Modals = {
     lastFocused: null,
 
